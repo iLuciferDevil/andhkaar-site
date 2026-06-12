@@ -321,6 +321,44 @@
     opacity:0.6;
   }
 
+  /* ---------- SHUNYA EASTER EGG ---------- */
+  .shunya-overlay{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:var(--bg);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:1.6rem;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity 1.8s ease;
+    z-index:100;
+  }
+  .shunya-overlay.visible{
+    opacity:1;
+  }
+  .shunya-overlay-text{
+    font-family:'Cinzel',serif;
+    letter-spacing:0.4em;
+    font-size:1.1rem;
+    color:var(--accent);
+    text-align:center;
+    text-transform:uppercase;
+  }
+  .shunya-overlay-text.small{
+    font-family:'Cormorant Garamond','Cinzel',serif;
+    font-size:1.3rem;
+    letter-spacing:0.05em;
+    text-transform:none;
+    color:var(--text);
+    line-height:1.9;
+  }
+
   @media (prefers-reduced-motion: reduce){
     .shunya.breathe svg,
     .scroll-hint::after{
@@ -336,7 +374,7 @@
 
 <!-- ================= THRESHOLD ================= -->
 <section id="threshold">
-  <div class="shunya breathe" aria-hidden="true">
+  <div class="shunya breathe" id="shunyaTrigger" style="cursor:pointer;">
     <svg viewBox="0 0 680 680" xmlns="http://www.w3.org/2000/svg">
       <defs>
         <radialGradient id="corona1" cx="50%" cy="50%" r="50%">
@@ -463,17 +501,23 @@
   </form>
 </section>
 
-<!-- ================= ARCHIVE ================= -->
+<!-- ================= THE CODEX ARCHIVE ================= -->
 <section id="archive">
-  <div class="archive-label">Archive</div>
+  <div class="archive-label">The Codex</div>
   <div class="archive-list">
-    <div class="archive-item active">001</div>
-    <div class="archive-item">— locked —</div>
-    <div class="archive-item">— locked —</div>
-    <div class="archive-item">— locked —</div>
-    <div class="archive-item">— locked —</div>
+    <div class="archive-item active" id="archiveEntry">001</div>
+    <div class="archive-item">003</div>
+    <div class="archive-item">007</div>
+    <div class="archive-item">013</div>
+    <div class="archive-item">021</div>
   </div>
 </section>
+
+<!-- ================= SHUNYA EASTER EGG OVERLAY ================= -->
+<div id="shunyaOverlay" class="shunya-overlay" aria-hidden="true">
+  <p class="shunya-overlay-text">SHUNYA</p>
+  <p class="shunya-overlay-text small">The void is not empty.<br>It is waiting.</p>
+</div>
 
 <script>
   const sections = document.querySelectorAll('.reveal-section');
@@ -494,9 +538,49 @@
 
   const form = document.getElementById('codexForm');
   const note = document.getElementById('descentNote');
-  form.addEventListener('submit', (e) => {
+  const submitBtn = form.querySelector('.descent-submit');
+
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
-    note.textContent = 'The descent has begun.';
+    const email = form.email.value.trim();
+    if(!email) return;
+
+    submitBtn.disabled = true;
+    note.textContent = '';
+
+    try {
+      const res = await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
+      });
+
+      if(res.ok){
+        note.textContent = 'The next entry will find you.';
+        form.email.value = '';
+        form.email.disabled = true;
+        submitBtn.style.display = 'none';
+      } else {
+        note.textContent = 'The descent failed. Try again.';
+        submitBtn.disabled = false;
+      }
+    } catch (err) {
+      note.textContent = 'The descent failed. Try again.';
+      submitBtn.disabled = false;
+    }
+  });
+
+  const shunyaTrigger = document.getElementById('shunyaTrigger');
+  const shunyaOverlay = document.getElementById('shunyaOverlay');
+  let shunyaBusy = false;
+  shunyaTrigger.addEventListener('click', () => {
+    if(shunyaBusy) return;
+    shunyaBusy = true;
+    shunyaOverlay.classList.add('visible');
+    setTimeout(() => {
+      shunyaOverlay.classList.remove('visible');
+      setTimeout(() => { shunyaBusy = false; }, 1800);
+    }, 3200);
   });
 </script>
 
