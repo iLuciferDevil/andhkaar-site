@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ANDHKAAR</title>
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,400;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#050505;
+    --text:#D9D9D9;
+    --accent:#FFFFFF;
+    --dim:#6a6a6a;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter',sans-serif;
+    font-weight:300;
+    overflow-x:hidden;
+  }
+  h1,h2,.display{
+    font-family:'Cinzel',serif;
+    font-weight:500;
+    letter-spacing:0.18em;
+    color:var(--accent);
+  }
+  section{
+    min-height:100vh;
+    width:100%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:6vh 8vw;
+    position:relative;
+  }
+
+  /* ---------- SHUNYA SYMBOL ---------- */
+  .shunya{
+    width:120px;
+    height:120px;
+    position:relative;
+  }
+  .shunya svg{
+    width:100%;
+    height:100%;
+    display:block;
+  }
+  .shunya.breathe svg{
+    animation:breathe 6s ease-in-out infinite;
+  }
+  @keyframes breathe{
+    0%,100%{ opacity:0.85; transform:scale(1); }
+    50%{ opacity:1; transform:scale(1.04); }
+  }
+
+  /* ---------- THRESHOLD ---------- */
+  #threshold{
+    gap:2.2rem;
+  }
+  #threshold .shunya{
+    width:130px;
+    height:130px;
+    margin-bottom:0.5rem;
+  }
+  .brand-name{
+    font-size:clamp(2.4rem, 8vw, 4.5rem);
+    letter-spacing:0.32em;
+    line-height:1;
+  }
+  .tagline{
+    font-family:'Inter',sans-serif;
+    font-weight:300;
+    letter-spacing:0.35em;
+    font-size:0.72rem;
+    color:var(--dim);
+    text-transform:uppercase;
+  }
+  .enter-btn{
+    margin-top:2.5rem;
+    background:none;
+    border:1px solid var(--dim);
+    color:var(--text);
+    font-family:'Cinzel',serif;
+    letter-spacing:0.3em;
+    font-size:0.75rem;
+    padding:0.9rem 2.4rem;
+    cursor:pointer;
+    transition:border-color 0.6s ease, color 0.6s ease, letter-spacing 0.6s ease;
+    text-decoration:none;
+    display:inline-block;
+  }
+  .enter-btn:hover, .enter-btn:focus-visible{
+    border-color:var(--accent);
+    color:var(--accent);
+    letter-spacing:0.45em;
+  }
+  .scroll-hint{
+    position:absolute;
+    bottom:5vh;
+    left:50%;
+    transform:translateX(-50%);
+    width:1px;
+    height:40px;
+    background:var(--dim);
+    opacity:0.5;
+  }
+  .scroll-hint::after{
+    content:'';
+    position:absolute;
+    bottom:0;
+    left:50%;
+    transform:translateX(-50%);
+    width:5px;
+    height:5px;
+    border-radius:50%;
+    background:var(--text);
+    animation:drip 2.4s ease-in-out infinite;
+  }
+  @keyframes drip{
+    0%{ opacity:0; transform:translate(-50%,-10px); }
+    40%{ opacity:1; }
+    100%{ opacity:0; transform:translate(-50%,10px); }
+  }
+
+  /* ---------- PRAVESH ---------- */
+  .pravesh-line{
+    font-family:'Cormorant Garamond','Cinzel',serif;
+    font-weight:400;
+    font-size:clamp(1.3rem, 3.4vw, 2.1rem);
+    line-height:1.9;
+    color:var(--text);
+    opacity:0;
+    transform:translateY(18px);
+    transition:opacity 1.4s ease, transform 1.4s ease;
+    max-width:680px;
+  }
+  .pravesh-line.visible{
+    opacity:1;
+    transform:translateY(0);
+  }
+  .pravesh-line.muted{
+    color:var(--dim);
+    font-size:clamp(1rem, 2.4vw, 1.4rem);
+  }
+  .pravesh-line.final{
+    font-family:'Cinzel',serif;
+    letter-spacing:0.3em;
+    font-size:clamp(1.4rem, 3vw, 2rem);
+    color:var(--accent);
+    margin-top:1rem;
+  }
+  .pravesh-block{
+    display:flex;
+    flex-direction:column;
+    gap:0.6rem;
+    align-items:center;
+  }
+
+  /* ---------- THE GATE ---------- */
+  #gate .shunya{
+    width:160px;
+    height:160px;
+    margin-bottom:2.5rem;
+  }
+  .gate-line{
+    font-family:'Cinzel',serif;
+    font-size:clamp(1.3rem, 3.4vw, 2.1rem);
+    letter-spacing:0.12em;
+    line-height:2;
+    color:var(--accent);
+    opacity:0;
+    transform:translateY(18px);
+    transition:opacity 1.4s ease, transform 1.4s ease;
+  }
+  .gate-line.visible{
+    opacity:1;
+    transform:translateY(0);
+  }
+  #gate .enter-btn{
+    opacity:0;
+    transform:translateY(12px);
+    transition:opacity 1.4s ease 0.6s, transform 1.4s ease 0.6s, border-color 0.6s ease, color 0.6s ease, letter-spacing 0.6s ease;
+  }
+  #gate .enter-btn.visible{
+    opacity:1;
+    transform:translateY(0);
+  }
+
+  /* ---------- CODEX ---------- */
+  .codex-label{
+    font-family:'Inter',sans-serif;
+    letter-spacing:0.4em;
+    font-size:0.7rem;
+    color:var(--dim);
+    text-transform:uppercase;
+    margin-bottom:1.8rem;
+    opacity:0;
+    transition:opacity 1.4s ease;
+  }
+  .codex-label.visible{ opacity:1; }
+  .codex-text{
+    font-family:'Cormorant Garamond','Cinzel',serif;
+    font-size:clamp(1.6rem, 4vw, 2.6rem);
+    line-height:1.7;
+    max-width:640px;
+    opacity:0;
+    transform:translateY(18px);
+    transition:opacity 1.4s ease 0.3s, transform 1.4s ease 0.3s;
+  }
+  .codex-text.visible{
+    opacity:1;
+    transform:translateY(0);
+  }
+
+  /* ---------- DESCENT / EMAIL ---------- */
+  #descent{
+    gap:1.8rem;
+  }
+  .descent-label{
+    font-family:'Inter',sans-serif;
+    letter-spacing:0.3em;
+    font-size:0.78rem;
+    color:var(--dim);
+    text-transform:uppercase;
+    max-width:420px;
+    line-height:2;
+  }
+  .descent-form{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:1.4rem;
+    margin-top:1rem;
+    width:100%;
+    max-width:360px;
+  }
+  .descent-form input[type="email"]{
+    width:100%;
+    background:transparent;
+    border:none;
+    border-bottom:1px solid var(--dim);
+    color:var(--accent);
+    font-family:'Inter',sans-serif;
+    font-weight:300;
+    font-size:1rem;
+    letter-spacing:0.08em;
+    padding:0.7rem 0.2rem;
+    text-align:center;
+    outline:none;
+    transition:border-color 0.4s ease;
+  }
+  .descent-form input[type="email"]::placeholder{
+    color:var(--dim);
+    font-style:italic;
+  }
+  .descent-form input[type="email"]:focus{
+    border-color:var(--accent);
+  }
+  .descent-submit{
+    background:none;
+    border:1px solid var(--dim);
+    color:var(--text);
+    font-family:'Cinzel',serif;
+    letter-spacing:0.3em;
+    font-size:0.7rem;
+    padding:0.85rem 2.2rem;
+    cursor:pointer;
+    transition:border-color 0.6s ease, color 0.6s ease, letter-spacing 0.6s ease;
+  }
+  .descent-submit:hover, .descent-submit:focus-visible{
+    border-color:var(--accent);
+    color:var(--accent);
+    letter-spacing:0.45em;
+  }
+  .descent-note{
+    font-size:0.7rem;
+    color:var(--dim);
+    letter-spacing:0.15em;
+    margin-top:0.5rem;
+    min-height:1em;
+  }
+
+  /* ---------- ARCHIVE ---------- */
+  #archive{
+    min-height:auto;
+    padding:4vh 8vw 6vh;
+    gap:0.9rem;
+  }
+  .archive-label{
+    font-family:'Inter',sans-serif;
+    letter-spacing:0.4em;
+    font-size:0.62rem;
+    color:var(--dim);
+    text-transform:uppercase;
+    opacity:0.6;
+  }
+  .archive-list{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:0.4rem;
+  }
+  .archive-item{
+    font-family:'Inter',sans-serif;
+    font-size:0.62rem;
+    letter-spacing:0.3em;
+    color:var(--dim);
+    opacity:0.35;
+    text-transform:uppercase;
+  }
+  .archive-item.active{
+    color:var(--text);
+    opacity:0.6;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .shunya.breathe svg,
+    .scroll-hint::after{
+      animation:none;
+    }
+    .pravesh-line, .gate-line, .codex-label, .codex-text, #gate .enter-btn{
+      transition:none;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- ================= THRESHOLD ================= -->
+<section id="threshold">
+  <div class="shunya breathe" aria-hidden="true">
+    <svg viewBox="0 0 680 680" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="corona1" cx="50%" cy="50%" r="50%">
+          <stop offset="48%" stop-color="#000000" stop-opacity="0"/>
+          <stop offset="65%" stop-color="#d8d8dc" stop-opacity="0.28"/>
+          <stop offset="78%" stop-color="#d8d8dc" stop-opacity="0.06"/>
+          <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <circle cx="340" cy="340" r="170" fill="url(#corona1)"/>
+      <circle cx="340" cy="340" r="100" fill="none" stroke="#d8d8dc" stroke-width="3"/>
+    </svg>
+  </div>
+  <div class="brand-name">ANDHKAAR</div>
+  <a href="#pravesh" class="enter-btn">Enter</a>
+  <div class="scroll-hint" aria-hidden="true"></div>
+</section>
+
+<!-- ================= PRAVESH ================= -->
+<section id="pravesh" class="reveal-section">
+  <div class="pravesh-block">
+    <p class="pravesh-line">You were not summoned.</p>
+    <p class="pravesh-line">You were not chosen.</p>
+    <p class="pravesh-line">You arrived.</p>
+    <p class="pravesh-line muted">That is enough.</p>
+  </div>
+</section>
+
+<section class="reveal-section">
+  <div class="pravesh-block">
+    <p class="pravesh-line">There are roads that lead outward.</p>
+    <p class="pravesh-line">Most spend their lives walking them.</p>
+    <p class="pravesh-line muted">Toward noise.</p>
+    <p class="pravesh-line muted">Toward approval.</p>
+    <p class="pravesh-line muted">Toward distraction.</p>
+    <p class="pravesh-line muted">Toward comfort.</p>
+  </div>
+</section>
+
+<section class="reveal-section">
+  <div class="pravesh-block">
+    <p class="pravesh-line">There is another road.</p>
+    <p class="pravesh-line">Few notice it.</p>
+    <p class="pravesh-line">Fewer take it.</p>
+    <p class="pravesh-line">It leads inward.</p>
+  </div>
+</section>
+
+<section class="reveal-section">
+  <div class="pravesh-block">
+    <p class="pravesh-line">At its beginning stands a gate.</p>
+    <p class="pravesh-line">Beyond it lies nothing that can be owned.</p>
+    <p class="pravesh-line muted">No wealth.</p>
+    <p class="pravesh-line muted">No status.</p>
+    <p class="pravesh-line muted">No victory.</p>
+    <p class="pravesh-line muted">No applause.</p>
+  </div>
+</section>
+
+<section class="reveal-section">
+  <div class="pravesh-block">
+    <p class="pravesh-line muted">Only questions.</p>
+    <p class="pravesh-line muted">Only silence.</p>
+    <p class="pravesh-line muted">Only the parts of yourself you left behind.</p>
+  </div>
+</section>
+
+<section class="reveal-section">
+  <div class="pravesh-block">
+    <p class="pravesh-line">Some encounter this darkness and retreat.</p>
+    <p class="pravesh-line">Some deny it exists.</p>
+    <p class="pravesh-line">Some spend their lives fleeing it.</p>
+  </div>
+</section>
+
+<section class="reveal-section">
+  <div class="pravesh-block">
+    <p class="pravesh-line">A rare few enter willingly.</p>
+    <p class="pravesh-line muted">Not because they are fearless.</p>
+    <p class="pravesh-line muted">But because they are tired of being ruled.</p>
+    <p class="pravesh-line final">This is ANDHKAAR.</p>
+  </div>
+</section>
+
+<!-- ================= THE GATE ================= -->
+<section id="gate" class="reveal-section">
+  <div class="shunya breathe" aria-hidden="true">
+    <svg viewBox="0 0 680 680" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="corona2" cx="50%" cy="50%" r="50%">
+          <stop offset="48%" stop-color="#000000" stop-opacity="0"/>
+          <stop offset="65%" stop-color="#d8d8dc" stop-opacity="0.28"/>
+          <stop offset="78%" stop-color="#d8d8dc" stop-opacity="0.06"/>
+          <stop offset="100%" stop-color="#000000" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <circle cx="340" cy="340" r="170" fill="url(#corona2)"/>
+      <circle cx="340" cy="340" r="100" fill="none" stroke="#d8d8dc" stroke-width="3"/>
+    </svg>
+  </div>
+  <p class="gate-line">The gate is open.<br>The cost is certainty.</p>
+  <a href="#codex002" class="enter-btn">Cross the Gate</a>
+</section>
+
+<!-- ================= CODEX 001 ================= -->
+<section class="reveal-section">
+  <div class="codex-label">Codex 001</div>
+  <p class="codex-text">The darkness outside cannot rule you.<br>The darkness within can.</p>
+</section>
+
+<!-- ================= CODEX 002 ================= -->
+<section id="codex002" class="reveal-section">
+  <div class="codex-label">Codex 002</div>
+  <p class="codex-text">Comfort is a beautiful prison.<br>Most never notice the bars.</p>
+</section>
+
+<!-- ================= DESCENT / EMAIL ================= -->
+<section id="descent">
+  <p class="descent-label">The next entry will not appear here.</p>
+  <form class="descent-form" id="codexForm">
+    <input type="email" name="email" placeholder="your@email" required aria-label="Email address">
+    <button type="submit" class="descent-submit">Descend</button>
+    <p class="descent-note" id="descentNote"></p>
+  </form>
+</section>
+
+<!-- ================= ARCHIVE ================= -->
+<section id="archive">
+  <div class="archive-label">Archive</div>
+  <div class="archive-list">
+    <div class="archive-item active">001</div>
+    <div class="archive-item">— locked —</div>
+    <div class="archive-item">— locked —</div>
+    <div class="archive-item">— locked —</div>
+    <div class="archive-item">— locked —</div>
+  </div>
+</section>
+
+<script>
+  const sections = document.querySelectorAll('.reveal-section');
+  const lines = document.querySelectorAll('.pravesh-line, .gate-line, .codex-label, .codex-text, #gate .enter-btn');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        const targets = entry.target.querySelectorAll('.pravesh-line, .gate-line, .codex-label, .codex-text, .enter-btn');
+        targets.forEach((el, i) => {
+          setTimeout(() => el.classList.add('visible'), i * 280);
+        });
+      }
+    });
+  }, { threshold: 0.45 });
+
+  sections.forEach(s => observer.observe(s));
+
+  const form = document.getElementById('codexForm');
+  const note = document.getElementById('descentNote');
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    note.textContent = 'The descent has begun.';
+  });
+</script>
+
+</body>
+</html>
