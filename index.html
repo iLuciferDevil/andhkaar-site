@@ -287,6 +287,25 @@
     margin-top:0.5rem;
     min-height:1em;
   }
+  .descent-form.confirmed input,
+  .descent-form.confirmed .descent-submit{
+    display:none;
+  }
+  .descent-confirm{
+    font-family:'Cinzel',serif;
+    font-size:clamp(1.1rem, 2.6vw, 1.5rem);
+    letter-spacing:0.25em;
+    color:var(--accent);
+    opacity:0;
+    transform:translateY(10px);
+    transition:opacity 1.4s ease, transform 1.4s ease;
+    text-align:center;
+    padding:1rem 0;
+  }
+  .descent-confirm.visible{
+    opacity:1;
+    transform:translateY(0);
+  }
 
   /* ---------- ARCHIVE ---------- */
   #archive{
@@ -498,6 +517,7 @@
     <input type="email" name="email" placeholder="your@email" required aria-label="Email address">
     <button type="submit" class="descent-submit">Descend</button>
     <p class="descent-note" id="descentNote"></p>
+    <p class="descent-confirm" id="descentConfirm">The next entry will find you.</p>
   </form>
 </section>
 
@@ -538,6 +558,7 @@
 
   const form = document.getElementById('codexForm');
   const note = document.getElementById('descentNote');
+  const confirmMsg = document.getElementById('descentConfirm');
   const submitBtn = form.querySelector('.descent-submit');
 
   form.addEventListener('submit', async (e) => {
@@ -556,10 +577,8 @@
       });
 
       if(res.ok){
-        note.textContent = 'The next entry will find you.';
-        form.email.value = '';
-        form.email.disabled = true;
-        submitBtn.style.display = 'none';
+        form.classList.add('confirmed');
+        setTimeout(() => confirmMsg.classList.add('visible'), 100);
       } else {
         note.textContent = 'The descent failed. Try again.';
         submitBtn.disabled = false;
