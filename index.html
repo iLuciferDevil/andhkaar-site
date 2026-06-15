@@ -5,6 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ANDHKAAR</title>
 <link rel="icon" type="image/png" href="favicon.png">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XWE7Y6W7V7"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-XWE7Y6W7V7');
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,400;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
@@ -579,6 +587,9 @@
       if(res.ok){
         form.classList.add('confirmed');
         setTimeout(() => confirmMsg.classList.add('visible'), 100);
+        if(typeof gtag === 'function'){
+          gtag('event', 'descend', { event_category: 'engagement', event_label: 'codex_signup' });
+        }
       } else {
         note.textContent = 'The descent failed. Try again.';
         submitBtn.disabled = false;
@@ -596,10 +607,21 @@
     if(shunyaBusy) return;
     shunyaBusy = true;
     shunyaOverlay.classList.add('visible');
+    if(typeof gtag === 'function'){
+      gtag('event', 'shunya_easter_egg', { event_category: 'engagement' });
+    }
     setTimeout(() => {
       shunyaOverlay.classList.remove('visible');
       setTimeout(() => { shunyaBusy = false; }, 1800);
     }, 3200);
+  });
+
+  document.querySelectorAll('a.enter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      if(typeof gtag === 'function'){
+        gtag('event', 'gate_click', { event_category: 'engagement', event_label: btn.textContent.trim() });
+      }
+    });
   });
 </script>
 
